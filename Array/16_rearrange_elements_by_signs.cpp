@@ -1,5 +1,7 @@
 #include <iostream>
+#include <vector>
 using namespace std;
+
 
 void print(int arr[], int n){
     for(int i = 0; i < n; i++){
@@ -9,14 +11,21 @@ void print(int arr[], int n){
 }
 int rearrangeElements(int arr[], int n);
 void reArrangeElementsBySign(int arr[], int n);
+vector<int> alternateNumber(vector<int> arr);
 
 int main(){
     int n = 6;
     int arr[] = {4, -2, -1, 3, 5, -7};
+    vector<int>vec = {4, -2, -1, 3, 5, -7, 6};
     print(arr, n);
     // rearrangeElements(arr, n);
     // print(arr, n);
-    reArrangeElementsBySign(arr, n);
+    // reArrangeElementsBySign(arr, n);
+    vector<int> ans = alternateNumber(vec);
+    for(int i = 0; i < ans.size(); i++){
+        cout << ans[i] << " ";
+    }
+    cout << endl;
     return 0;
 }
 
@@ -48,6 +57,7 @@ int rearrangeElements(int arr[], int n){
     return 0;
 }
 
+// better
 void reArrangeElementsBySign(int arr[], int n){
     int posIdx = 0;
     int negIdx = 1;
@@ -62,4 +72,46 @@ void reArrangeElementsBySign(int arr[], int n){
         }
     }
     print(ans, n);
+}
+
+
+// second variety : When neg[] != pos[] --> n is odd
+
+vector<int> alternateNumber(vector<int> arr){
+    int size = arr.size();
+    vector<int> pos, neg;
+
+    for(int i = 0; i < size; i++){
+        if(arr[i] < 0){
+            neg.push_back(arr[i]);
+        }else{
+            pos.push_back(arr[i]);
+        }
+    }
+
+    if(pos.size() > neg.size()){
+        for(int i = 0; i < neg.size(); i++){
+            arr[2*i] = pos[i];
+            arr[2*i + 1] = neg[i];
+        }
+
+        int idx = neg.size() * 2;
+
+        for(int i = neg.size(); i < pos.size(); i++){
+            arr[idx] = pos[i];
+            idx++;
+        }
+    }else{
+        for(int i = 0; i < pos.size(); i++){
+            arr[2*i] = pos[i];
+            arr[2*i + 1] = neg[i];
+        }
+        int idx = pos.size() * 2;
+
+        for(int i = pos.size(); i < neg.size(); i++){
+            arr[idx] = neg[i];
+            idx++;
+        }
+    }
+    return arr;
 }
